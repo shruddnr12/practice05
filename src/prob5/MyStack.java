@@ -1,54 +1,176 @@
 package prob5;
 
-
-public class MyStack   {
-
+public class MyStack<T> {
 	private int top;
-	private String[] buffer;
+	private T[] buffer;
 	
-	public MyStack(int size) {
-		 buffer  = new String[size];
-		 top = 0;
-	}
-	
-	public void push(String str)
-	{
-		if(top  == buffer.length)
-		{ 	
-			String[] rebuffer = new String[buffer.length*2];
-			for(int i = 0; i < buffer.length; i++)
-			{
-				rebuffer[i] = buffer[i];
-			}
-			buffer = rebuffer;
-			
-//			System.arraycopy(buffer, 0, buffer.length, rebuffer, 0, buffer.length);
-//			rebuffer = buffer.clone();	
-//			buffer = rebuffer;
-			
-			buffer[top++] = str;
-		}
-		else
-		{
-			buffer[top++] = str;
-		}
+	public MyStack( int capacity ) {
+		top = -1;
+		buffer = (T[])new Object[ capacity ];
 	}
 
-	public String pop() throws MyStackException 
-	{
-
-		String buf = buffer[top--];
-		
-		if( top < -1 )
-			
-			throw new MyStackException();		
-		
-		return buf;
+	public void push( T s ) {
+		if( top == buffer.length - 1 ) {  // stack is full
+			resize();
+		}
+		buffer[ ++top ] = s;
 	}
+
+	public T pop() throws MyStackException {
+		if( isEmpty() ) { 
+			throw new MyStackException();
+		}
 		
-	public boolean isEmpty()
-	{
-		return top==-1;
+		T result = buffer[ top ];
+		buffer[ top-- ] = null; // GC
+		
+		return result;
 	}
 	
+	public boolean isEmpty() {
+		return top == -1;
+	}
+	
+	@SuppressWarnings("unchecked")  // 워닝 제거.
+	private void resize() {
+		T[] temp =(T[]) new Object[ buffer.length * 2 ];
+
+		for( int i = 0; i <= top; i++ ) {
+			temp[ i ] = buffer[ i ];
+		}
+		
+		buffer= temp;
+	}
 }
+
+//package prob5;
+//
+//public class MyStack {
+//	private int top;
+//	private String[] buffer;
+//	
+//	public MyStack( int capacity ) {
+//		top = -1;
+//		buffer = new String[ capacity ];
+//	}
+//
+//	public void push( String s ) {
+//		if( top == buffer.length - 1 ) {  // stack is full
+//			resize();
+//		}
+//		buffer[ ++top ] = s;
+//	}
+//
+//	public String pop() throws MyStackException {
+//		if( isEmpty() ) { 
+//			throw new MyStackException();
+//		}
+//		
+//		String result = buffer[ top ];
+//		buffer[ top-- ] = null; // GC
+//		
+//		return result;
+//	}
+//	
+//	public boolean isEmpty() {
+//		return top == -1;
+//	}
+//	
+//	private void resize() {
+//		String[] temp = new String[ buffer.length * 2 ];
+//
+//		for( int i = 0; i <= top; i++ ) {
+//			temp[ i ] = buffer[ i ];
+//		}
+//		
+//		buffer= temp;
+//	}
+//}
+
+//package prob5;
+//
+//public class MyStack {
+//	private int top;
+//	private Object[] buffer;
+//	
+//	public MyStack( int capacity ) {
+//		top = -1;
+//		buffer = new Object[ capacity ];
+//	}
+//
+//	public void push( String s ) {
+//		if( top == buffer.length - 1 ) {  // stack is full
+//			resize();
+//		}
+//		buffer[ ++top ] = s;
+//	}
+//
+//	public Object pop() throws MyStackException {
+//		if( isEmpty() ) { 
+//			throw new MyStackException();
+//		}
+//		
+//		Object result = buffer[ top ];
+//		buffer[ top-- ] = null; // GC
+//		
+//		return result;
+//	}
+//	
+//	public boolean isEmpty() {
+//		return top == -1;
+//	}
+//	
+//	private void resize() {
+//		Object[] temp = new String[ buffer.length * 2 ];
+//
+//		for( int i = 0; i <= top; i++ ) {
+//			temp[ i ] = buffer[ i ];
+//		}
+//		
+//		buffer= temp;
+//	}
+//}
+//
+////package prob5;
+////
+////public class MyStack {
+////	private int top;
+////	private String[] buffer;
+////	
+////	public MyStack( int capacity ) {
+////		top = -1;
+////		buffer = new String[ capacity ];
+////	}
+////
+////	public void push( String s ) {
+////		if( top == buffer.length - 1 ) {  // stack is full
+////			resize();
+////		}
+////		buffer[ ++top ] = s;
+////	}
+////
+////	public String pop() throws MyStackException {
+////		if( isEmpty() ) { 
+////			throw new MyStackException();
+////		}
+////		
+////		String result = buffer[ top ];
+////		buffer[ top-- ] = null; // GC
+////		
+////		return result;
+////	}
+////	
+////	public boolean isEmpty() {
+////		return top == -1;
+////	}
+////	
+////	private void resize() {
+////		String[] temp = new String[ buffer.length * 2 ];
+////
+////		for( int i = 0; i <= top; i++ ) {
+////			temp[ i ] = buffer[ i ];
+////		}
+////		
+////		buffer= temp;
+////	}
+////}
